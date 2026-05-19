@@ -32,10 +32,7 @@ function scrollTo(id) {
 
     <div class="max-w-7xl mx-auto px-10 py-32 w-full">
       <div class="grid lg:grid-cols-12 gap-8 items-center">
-
-        <!-- Text Side — spans 7 cols -->
         <div class="lg:col-span-7">
-
           <!-- Tag line -->
           <div
             :class="[
@@ -114,7 +111,7 @@ function scrollTo(id) {
               visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             ]"
           >
-            <div v-for="(s, i) in [{ v: '2+', l: 'Years Exp.' }, { v: '10+', l: 'Projects' }, { v: '100%', l: 'Satisfaction' }]" :key="i">
+            <div v-for="(s, i) in [{ v: '2+', l: 'Years Exp.' }, { v: '3', l: 'Projects' }, { v: '100%', l: 'Satisfaction' }]" :key="i">
               <div :class="['text-2xl font-semibold', isDark ? 'text-zinc-100' : 'text-zinc-900']">
                 {{ s.v }}
               </div>
@@ -131,16 +128,13 @@ function scrollTo(id) {
           ]"
         >
           <div class="relative">
-            <!-- Decorative offset frame -->
             <div class="absolute -top-4 -right-4 w-full h-full rounded-sm border-2 border-rose-400/25"></div>
-            <!-- Second subtle frame -->
             <div class="absolute -top-8 -right-8 w-full h-full rounded-sm border border-rose-400/10"></div>
             <img
               src="@/assets/WinIMG.JPG"
               alt="Wongsewaris Tumsud"
               class="w-80 h-96 lg:w-96 lg:h-[28rem] object-cover rounded-sm relative z-10 hover:grayscale transition-all duration-700"
             />
-            <!-- Role badge pinned to image -->
             <div
               :class="[
                 'absolute -bottom-5 -left-5 z-20 px-5 py-3 rounded-sm text-xs tracking-widest uppercase font-semibold shadow-lg',
