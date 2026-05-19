@@ -18,7 +18,7 @@ onUnmounted(() => observer?.disconnect())
 
 const facts = [
   { label: 'Years of Experience', value: '2+' },
-  { label: 'Projects Completed', value: '10+' },
+  { label: 'Projects Completed', value: '3' },
 ]
 
 const interests = [
