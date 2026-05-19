@@ -71,14 +71,30 @@ function scrollTo(id) {
         </button>
       </div>
 
-      <!-- Mobile Menu Button -->
-      <button @click="menuOpen = !menuOpen" class="md:hidden p-1" :class="isDark ? 'text-zinc-100' : 'text-zinc-900'">
-        <div class="w-5 flex flex-col gap-1">
-          <span :class="['block h-px transition-all duration-300', isDark ? 'bg-zinc-100' : 'bg-zinc-900', menuOpen ? 'rotate-45 translate-y-1.5' : '']"></span>
-          <span :class="['block h-px transition-all duration-300', isDark ? 'bg-zinc-100' : 'bg-zinc-900', menuOpen ? 'opacity-0' : '']"></span>
-          <span :class="['block h-px transition-all duration-300', isDark ? 'bg-zinc-100' : 'bg-zinc-900', menuOpen ? '-rotate-45 -translate-y-1.5' : '']"></span>
-        </div>
-      </button>
+      <!-- Mobile: Theme Toggle + Hamburger -->
+      <div class="md:hidden flex items-center gap-3">
+        <!-- Dark/Light Toggle (always visible on mobile) -->
+        <button
+          @click="emit('toggleTheme')"
+          :class="[
+            'text-xs tracking-widest uppercase font-medium px-3 py-1.5 rounded border transition-colors',
+            isDark
+              ? 'border-zinc-600 text-zinc-400 hover:text-zinc-100 hover:border-zinc-400'
+              : 'border-zinc-300 text-zinc-600 hover:text-zinc-900 hover:border-zinc-500'
+          ]"
+        >
+          {{ isDark ? '☀️' : '🌙' }}
+        </button>
+
+        <!-- Hamburger Button -->
+        <button @click="menuOpen = !menuOpen" class="p-1" :class="isDark ? 'text-zinc-100' : 'text-zinc-900'">
+          <div class="w-5 flex flex-col gap-1">
+            <span :class="['block h-px transition-all duration-300', isDark ? 'bg-zinc-100' : 'bg-zinc-900', menuOpen ? 'rotate-45 translate-y-1.5' : '']"></span>
+            <span :class="['block h-px transition-all duration-300', isDark ? 'bg-zinc-100' : 'bg-zinc-900', menuOpen ? 'opacity-0' : '']"></span>
+            <span :class="['block h-px transition-all duration-300', isDark ? 'bg-zinc-100' : 'bg-zinc-900', menuOpen ? '-rotate-45 -translate-y-1.5' : '']"></span>
+          </div>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Menu -->
@@ -91,9 +107,6 @@ function scrollTo(id) {
           :class="['text-xs tracking-widest uppercase font-medium text-left', isDark ? 'text-zinc-400' : 'text-zinc-500']"
         >
           {{ item }}
-        </button>
-        <button @click="emit('toggleTheme')" :class="['text-xs tracking-widest uppercase font-medium text-left', isDark ? 'text-zinc-400' : 'text-zinc-500']">
-          {{ isDark ? '☀️ Light Mode' : '🌙 Dark Mode' }}
         </button>
       </div>
     </div>

@@ -89,12 +89,14 @@ const projects = [
               <span
                 :class="['font-mono text-xs mt-1 shrink-0',isDark ? 'text-zinc-600' : 'text-black']">{{ project.number }}</span>
 
-              <div class="w-30 h-30 rounded-sm overflow-hidden shrink-0">
-                <img
-                  :src="project.img"
-                  :alt="project.title"
-                  class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                />
+              <div class="flex-1 lg:flex-none flex justify-center lg:justify-start">
+                <div class="w-40 h-40 lg:w-35 lg:h-35 rounded-sm overflow-hidden shrink-0">
+                  <img
+                    :src="project.img"
+                    :alt="project.title"
+                    class="w-full h-full object-cover lg:grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
+                </div>
               </div>
             </div>
 
@@ -122,14 +124,14 @@ const projects = [
             </div>
 
             <!-- Arrow -->
-            <div class="lg:col-span-1 flex items-center justify-end">
+            <div class="lg:col-span-1 flex items-center justify-center lg:justify-end">
               <a
                 :href="project.link"
                 target="_blank"
                 rel="noopener noreferrer"
                 :class="[
                   'text-2xl border-2 rounded-lg px-2 pb-1 transition-all duration-300 group-hover:translate-x-1',
-                  isDark ? 'text-zinc-700 group-hover:text-rose-400' : 'text-rose-500 group-hover:text-rose-500 bg-slate-200'
+                  isDark ? 'text-rose-400 border-rose-400 lg:text-zinc-700 lg:border-zinc-700 group-hover:text-rose-400 group-hover:border-rose-400' : 'text-rose-500 group-hover:text-rose-500 bg-slate-200'
                 ]"
               >→</a>
             </div>

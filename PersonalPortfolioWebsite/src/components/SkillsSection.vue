@@ -16,45 +16,69 @@ onMounted(() => {
 })
 onUnmounted(() => observer?.disconnect())
 
+// Colour classes per level (dark / light variants)
+const levelColors = {
+  Beginner: {
+    dark:  'bg-slate-800 text-slate-300 border border-slate-700',
+    light: 'bg-slate-100 text-slate-600 border border-slate-300',
+  },
+  Intermediate: {
+    dark:  'bg-sky-900/60 text-sky-300 border border-sky-700',
+    light: 'bg-sky-100 text-sky-700 border border-sky-300',
+  },
+  Advanced: {
+    dark:  'bg-amber-900/50 text-amber-300 border border-amber-700',
+    light: 'bg-amber-100 text-amber-700 border border-amber-300',
+  },
+  Expert: {
+    dark:  'bg-emerald-900/50 text-emerald-300 border border-emerald-700',
+    light: 'bg-emerald-100 text-emerald-700 border border-emerald-300',
+  },
+}
+
+function levelClass(level, isDark) {
+  return levelColors[level]?.[isDark ? 'dark' : 'light'] ?? ''
+}
+
 const technicalSkills = [
   {
     name: 'User Research',
-    level: 85,
+    level: 'Expert',
     desc: 'Interviews, Surveys, Usability Testing'
   },
   {
     name: 'UI/UX Design (Figma)',
-    level: 90,
+    level: 'Advanced',
     desc: 'Wireframing, Prototyping, Visual Design'
   },
   {
     name: 'Design Systems',
-    level: 80,
+    level: 'Advanced',
     desc: 'Component Libraries, UI Consistency'
   },
   {
     name: 'Information Architecture',
-    level: 75,
+    level: 'Advanced',
     desc: 'User Flows, Sitemap, Content Structure'
   },
   {
     name: 'Accessibility',
-    level: 70,
+    level: 'Intermediate',
     desc: 'Inclusive & Responsive Design'
   },
   {
     name: 'Tailwind CSS',
-    level: 85,
+    level: 'Advanced',
     desc: 'Responsive Design, Utility-first Styling'
   },
   {
     name: 'HTML / CSS / JavaScript',
-    level: 80,
+    level: 'Intermediate',
     desc: 'Semantic HTML, Flexbox, Grid, ES6+'
   },
   {
     name: 'Vue.js',
-    level: 75,
+    level: 'Intermediate',
     desc: 'Components, Routing, Composition API'
   },
 ]
@@ -125,15 +149,10 @@ const process = [
               :class="['transition-all duration-700', visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4']"
               :style="{ transitionDelay: `${i * 80}ms` }"
             >
-              <div class="flex justify-between items-baseline mb-2">
-                <span :class="['text-sm font-semibold', isDark ? 'text-zinc-200' : 'text-zinc-800']">{{ skill.name }}</span>
-                <span :class="['text-xs font-mono', isDark ? 'text-zinc-500' : 'text-zinc-500']">{{ skill.level }}%</span>
-              </div>
-              <div :class="['h-1.5 rounded-full overflow-hidden', isDark ? 'bg-zinc-800' : 'bg-zinc-200']">
-                <div
-                  class="h-full bg-rose-400 rounded-full transition-all duration-1000 ease-out"
-                  :style="{ width: visible ? `${skill.level}%` : '0%', transitionDelay: `${200 + i * 80}ms` }"
-                ></div>
+              <div class="flex items-center gap-2">
+                <span :class="['text-sm font-semibold shrink-0', isDark ? 'text-zinc-200' : 'text-zinc-800']">{{ skill.name }}</span>
+                <span :class="['flex-1 border-b border-dashed', isDark ? 'border-zinc-700' : 'border-zinc-300']"></span>
+                <span :class="['text-[11px] font-semibold tracking-wide px-2.5 py-0.5 rounded shrink-0', levelClass(skill.level, isDark)]">{{ skill.level }}</span>
               </div>
               <div :class="['text-[11px] mt-1.5', isDark ? 'text-zinc-600' : 'text-zinc-500']">{{ skill.desc }}</div>
             </div>

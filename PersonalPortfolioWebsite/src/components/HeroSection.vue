@@ -123,7 +123,7 @@ function scrollTo(id) {
           </div>
         </div>
 
-        <!-- Image Side — spans 5 cols -->
+        <!-- Image Side -->
         <div
           :class="[
             'lg:col-span-5 flex justify-center lg:justify-end transition-all duration-700 delay-400',
