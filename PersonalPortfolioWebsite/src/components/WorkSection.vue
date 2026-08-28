@@ -131,7 +131,7 @@ const projects = [
                 rel="noopener noreferrer"
                 :class="[
                   'text-2xl border-2 rounded-lg px-2 pb-1 transition-all duration-300 group-hover:translate-x-1',
-                  isDark ? 'text-rose-400 border-rose-400 lg:text-zinc-700 lg:border-zinc-700 group-hover:text-rose-400 group-hover:border-rose-400 group-hover:bg-rose-100' : 'text-rose-500 group-hover:text-rose-500 bg-slate-200'
+                  isDark ? 'text-rose-400 border-rose-400 lg:text-zinc-700 lg:border-zinc-700 group-hover:text-rose-400 group-hover:border-rose-400 group-hover:bg-rose-50' : 'text-rose-500 group-hover:text-rose-500 bg-slate-200'
                 ]"
               >→</a>
             </div>
