@@ -173,8 +173,7 @@ const interests = [
                 'Vue.js', 
                 'Tailwind CSS',
                 'HTML', 
-                'CSS', 
-                'JavaScript'
+                'CSS'
                 ]"
               :key="tool"
               :class="[

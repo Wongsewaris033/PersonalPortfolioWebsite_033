@@ -42,7 +42,7 @@ function scrollTo(id) {
             ]"
           >
             <span class="w-10 h-px bg-current"></span>
-            UX Researcher
+            UX/UI Designer
           </div>
 
           <!-- Name -->
