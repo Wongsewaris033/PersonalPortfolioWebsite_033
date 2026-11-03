@@ -131,7 +131,7 @@ function scrollTo(id) {
             <div class="absolute -top-4 -right-4 w-full h-full rounded-sm border-2 border-rose-400/25"></div>
             <div class="absolute -top-8 -right-8 w-full h-full rounded-sm border border-rose-400/10"></div>
             <img
-              src="@/assets/WinIMG.JPG"
+              src="@/assets/WinProfile.JPEG"
               alt="Wongsewaris Tumsud"
               class="w-80 h-96 lg:w-96 lg:h-[28rem] object-cover rounded-sm relative z-10 hover:grayscale transition-all duration-700"
             />
