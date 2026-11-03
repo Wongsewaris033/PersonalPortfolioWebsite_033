@@ -141,7 +141,7 @@ function scrollTo(id) {
                 isDark ? 'bg-zinc-900 border border-zinc-700 text-zinc-300' : 'bg-white border border-zinc-300 text-zinc-700 shadow-zinc-200/60'
               ]"
             >
-              UX Researcher
+              UX/UI Designer
             </div>
           </div>
         </div>
