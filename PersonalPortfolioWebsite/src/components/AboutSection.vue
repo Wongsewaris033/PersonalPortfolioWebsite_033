@@ -13,6 +13,9 @@ const facts = [
 const interests = [
   'UI/UX Design',
   'Photography',
+  'Basketball',
+  'Badminton',
+  'Table Tennis',
   'Coffee Brewing',
   'Reading UX Books',
   'Human-Centered Design',
