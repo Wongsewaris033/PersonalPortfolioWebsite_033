@@ -74,7 +74,7 @@ const softSkills = [
 const process = [
   {
     step: '01',
-    title: 'Research',
+    title: 'Empathize',
     desc: 'Understand user needs and business goals through interviews, observation, and competitive analysis.'
   },
   {
