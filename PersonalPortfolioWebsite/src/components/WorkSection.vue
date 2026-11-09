@@ -17,7 +17,8 @@ const projects = [
     technologies: ['HTML', 'CSS', 'JavaScript', 'Docker', 'Prisma'],
     tags: ['Full-stack Collaboration', 'Responsive UI', 'DevOps', 'Database Management', 'Web Application'],
     img: integratedProj,
-    link: 'https://github.com/IT-BANGMOD-INTEGRATED-PROJECT-2025/intproj25-KK3',
+    github: 'https://github.com/IT-BANGMOD-INTEGRATED-PROJECT-2025/intproj25-KK3',
+    figma: '',
   },
   {
     number: '02',
@@ -28,7 +29,8 @@ const projects = [
     technologies: ['Figma', 'Vue.js', 'Tailwind CSS', 'JavaScript'],
     tags: ['User Research', 'Responsive Design', 'Design System', 'Accessibility', 'Interaction Design'],
     img: cookify,
-    link: 'https://github.com/PANHAN220/INT250-G07-Cookify',
+    github: 'https://github.com/PANHAN220/INT250-G07-Cookify',
+    figma: 'https://www.figma.com/design/b8PvEazFjE6rRGiV1Ubh8F/Cookify?node-id=0-1&t=p9esXE8iJb8ckEyo-1',
   },
   {
     number: '03',
@@ -39,7 +41,8 @@ const projects = [
     technologies: ['Figma', 'FigJam', 'Vue.js', 'Tailwind CSS', 'JavaScript'],
     tags: ['Interaction Design', 'Game UI', 'Cognitive UX', 'Accessibility', 'Responsive Design'],
     img: visualMemoryTest,
-    link: 'https://github.com/PANHAN220/INT250-G07-Visual-Memory-Test',
+    github: 'https://github.com/PANHAN220/INT250-G07-Visual-Memory-Test',
+    figma: 'https://www.figma.com/design/TKfLvSmtAuxLdxkPB270je/Human-Benchmark-Memory?node-id=0-1&t=otfEjFc7dIufYCdV-1',
   },
 ]
 </script>
@@ -50,14 +53,10 @@ const projects = [
       <SectionHeader title="Projects" />
 
       <div class="flex flex-col gap-5 md:gap-6">
-        <a
+        <article
           v-for="(project, i) in projects"
           :key="project.number"
-          :href="project.link"
-          target="_blank"
-          rel="noopener noreferrer"
-          :aria-label="`Open ${project.title} on GitHub`"
-          class="reveal group card card-hover relative block overflow-hidden cursor-pointer"
+          class="reveal group card card-hover relative overflow-hidden"
           :style="{ '--d': `${i * 120}ms` }"
         >
           <div class="grid lg:grid-cols-12 gap-6 lg:gap-10 p-6 md:p-8">
@@ -95,6 +94,31 @@ const projects = [
                 >{{ tag }}</span>
               </div>
 
+              <!-- Action buttons -->
+              <div class="flex flex-wrap gap-3 mb-6">
+                <a
+                  v-if="project.figma"
+                  :href="project.figma"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  :aria-label="`Open ${project.title} on Figma`"
+                  class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-medium bg-accent-solid border border-accent-solid text-white hover:opacity-90 transition-opacity duration-300"
+                >Figma</a>
+                <a
+                  v-if="project.github"
+                  :href="project.github"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  :aria-label="`Open ${project.title} on GitHub`"
+                  :class="[
+                    'inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-medium transition-colors duration-300',
+                    project.figma
+                      ? 'border border-line text-fg-2 hover:bg-surface-2 hover:text-fg'
+                      : 'bg-accent-solid border border-accent-solid text-white hover:opacity-90'
+                  ]"
+                >GitHub</a>
+              </div>
+
               <!-- Technologies -->
               <div class="mt-auto pt-5 border-t border-line flex items-center gap-2.5 flex-wrap">
                 <span class="eyebrow shrink-0 mr-1">Built with</span>
@@ -107,7 +131,7 @@ const projects = [
             </div>
 
           </div>
-        </a>
+        </article>
       </div>
     </div>
   </section>
