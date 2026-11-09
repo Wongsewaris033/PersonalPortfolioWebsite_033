@@ -1,10 +1,16 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { toolbox } from '@/data/site'
+import { useReveal } from '@/composables/useReveal'
 
-defineProps({ isDark: Boolean })
+const { visible, sectionRef } = useReveal()
 
-const visible = ref(false)
-onMounted(() => setTimeout(() => (visible.value = true), 100))
+const stats = [
+  { v: '2+', l: 'Years Exp.' },
+  { v: '3', l: 'Projects' },
+]
+
+// Decorative skill ticker: the toolbox list twice so the loop is seamless
+const marqueeItems = [...toolbox, ...toolbox]
 
 function scrollTo(id) {
   const el = document.getElementById(id)
@@ -13,138 +19,102 @@ function scrollTo(id) {
 </script>
 
 <template>
-  <section id="hero" class="min-h-screen flex items-center relative overflow-hidden">
+  <section
+    id="hero"
+    ref="sectionRef"
+    :class="['relative overflow-hidden pt-32 md:pt-40 pb-16 md:pb-24', { 'is-visible': visible }]"
+  >
+    <!-- Soft accent glow -->
+    <div class="pointer-events-none absolute -top-24 right-0 w-[28rem] h-[28rem] rounded-full blur-3xl bg-accent opacity-10 animate-pulse-slow"></div>
 
-    <!-- Background grid -->
-    <div
-      class="absolute inset-0"
-      :style="{
-        backgroundImage: `linear-gradient(${isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'} 1px, transparent 1px), linear-gradient(90deg, ${isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'} 1px, transparent 1px)`,
-        backgroundSize: '80px 80px'
-      }"
-    ></div>
+    <div class="page-container relative">
+      <!-- Tag line -->
+      <div class="reveal inline-flex items-center gap-3 px-4 py-2 rounded-full border border-line bg-surface text-[11px] tracking-widest uppercase font-medium text-fg-2 mb-8">
+        <span class="relative flex w-2 h-2">
+          <span class="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-60 animate-ping"></span>
+          <span class="relative inline-flex w-2 h-2 rounded-full bg-emerald-500"></span>
+        </span>
+        UX/UI Designer
+      </div>
 
-    <!-- Accent blobs -->
-    <div class="absolute top-1/3 right-1/3 w-96 h-96 rounded-full blur-3xl opacity-10 animate-pulse-slow"
-      :class="isDark ? 'bg-rose-500' : 'bg-rose-300'"></div>
-    <div class="absolute bottom-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl opacity-5 animate-pulse-slow"
-      :class="isDark ? 'bg-indigo-500' : 'bg-indigo-300'" style="animation-delay:2s"></div>
+      <!-- Name -->
+      <h1
+        class="reveal font-light uppercase leading-[0.95] tracking-tight text-fg mb-12 md:mb-16"
+        style="font-size: clamp(2.25rem, 11vw, 8rem); --d: 100ms"
+      >
+        Wongsewaris<br />
+        <span class="font-semibold">Tumsud</span>
+      </h1>
 
-    <div class="max-w-7xl mx-auto px-10 py-32 w-full">
-      <div class="grid lg:grid-cols-12 gap-8 items-center">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         <div class="lg:col-span-7">
-          <!-- Tag line -->
-          <div
-            :class="[
-              'inline-flex items-center gap-3 text-xs tracking-widest uppercase font-medium mb-8 transition-all duration-700',
-              isDark ? 'text-rose-400' : 'text-rose-500',
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            ]"
-          >
-            <span class="w-10 h-px bg-current"></span>
-            UX/UI Designer
-          </div>
-
-          <!-- Name -->
-          <h1
-            :class="[
-              'font-light leading-[1.05] mb-6 transition-all duration-700 delay-100',
-              isDark ? 'text-zinc-100' : 'text-zinc-900',
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            ]"
-            style="font-size: clamp(3rem, 5.5vw, 5rem);"
-          >
-            Wongsewaris<br />
-            <span class="font-semibold">Tumsud</span>
-          </h1>
-
           <!-- Tagline -->
-          <p
-            :class="[
-              'text-lg leading-relaxed mb-4 max-w-xl transition-all duration-700 delay-200',
-              isDark ? 'text-zinc-300' : 'text-zinc-700',
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            ]"
-          >
+          <p class="reveal text-xl md:text-2xl leading-relaxed mb-5 max-w-xl text-fg-2" style="--d: 200ms">
             Designing experiences that put real people first —
-            from <span :class="isDark ? 'text-zinc-100 font-medium' : 'text-zinc-900 font-semibold'">research</span> to
-            <span :class="isDark ? 'text-zinc-100 font-medium' : 'text-zinc-900 font-semibold'">high-fidelity prototype</span>.
+            from <span class="text-fg font-semibold">research</span> to
+            <span class="text-fg font-semibold">high-fidelity prototype</span>.
           </p>
-          <p
-            :class="[
-              'text-sm leading-relaxed mb-10 max-w-lg transition-all duration-700 delay-[250ms]',
-              isDark ? 'text-zinc-500' : 'text-zinc-500',
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            ]"
-          >
+          <p class="reveal text-sm leading-relaxed mb-10 max-w-lg text-muted" style="--d: 250ms">
             Passionate about design systems, accessibility, and the intersection of AI and human-centred design.
           </p>
 
-          <!-- CTA Buttons -->
-          <div
-            :class="[
-              'flex items-center gap-5 mb-16 transition-all duration-700 delay-300',
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            ]"
-          >
+          <!-- CTA buttons -->
+          <div class="reveal flex flex-wrap items-center gap-4 mb-12" style="--d: 300ms">
             <button
               @click="scrollTo('work')"
-              class="px-8 py-3.5 text-xs tracking-widest uppercase font-semibold bg-rose-500 text-white rounded-sm hover:bg-rose-600 active:scale-95 transition-all duration-200"
+              class="px-8 py-3.5 text-xs tracking-widest uppercase font-semibold bg-accent-solid text-white rounded-full hover:brightness-110 hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
             >
               View My Work
             </button>
             <button
               @click="scrollTo('contact')"
-              :class="[
-                'px-8 py-3.5 text-xs tracking-widest uppercase font-semibold rounded-sm border active:scale-95 transition-all duration-200',
-                isDark ? 'border-zinc-700 text-zinc-300 hover:border-zinc-400 hover:text-zinc-100' : 'border-zinc-300 text-zinc-600 hover:border-zinc-700 hover:text-zinc-900'
-              ]"
+              class="px-8 py-3.5 text-xs tracking-widest uppercase font-semibold rounded-full border border-line text-fg-2 hover:border-fg hover:text-fg hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
             >
               Get in Touch
             </button>
           </div>
 
-          <!-- Mini stats row -->
-          <div
-            :class="[
-              'flex items-center gap-10 transition-all duration-700 delay-[350ms]',
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            ]"
-          >
-            <div v-for="(s, i) in [{ v: '2+', l: 'Years Exp.' }, { v: '3', l: 'Projects' }, { v: '100%', l: 'Satisfaction' }]" :key="i">
-              <div :class="['text-2xl font-semibold', isDark ? 'text-zinc-100' : 'text-zinc-900']">
-                {{ s.v }}
-              </div>
-              <div :class="['text-[10px] tracking-widest uppercase mt-0.5', isDark ? 'text-zinc-500' : 'text-zinc-500']">{{ s.l }}</div>
+          <!-- Mini stats -->
+          <div class="reveal flex items-center gap-8 sm:gap-12" style="--d: 350ms">
+            <div v-for="s in stats" :key="s.l">
+              <div class="text-2xl md:text-3xl font-semibold text-fg">{{ s.v }}</div>
+              <div class="eyebrow mt-1">{{ s.l }}</div>
             </div>
           </div>
         </div>
 
-        <!-- Image Side -->
-        <div
-          :class="[
-            'lg:col-span-5 flex justify-center lg:justify-end transition-all duration-700 delay-400',
-            visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
-          ]"
-        >
-          <div class="relative">
-            <div class="absolute -top-4 -right-4 w-full h-full rounded-sm border-2 border-rose-400/25"></div>
-            <div class="absolute -top-8 -right-8 w-full h-full rounded-sm border border-rose-400/10"></div>
-            <img
-              src="@/assets/WinProfile.JPEG"
-              alt="Wongsewaris Tumsud"
-              class="w-80 h-96 lg:w-96 lg:h-[28rem] object-cover rounded-sm relative z-10 hover:grayscale transition-all duration-700"
-            />
-            <div
-              :class="[
-                'absolute -bottom-5 -left-5 z-20 px-5 py-3 rounded-sm text-xs tracking-widest uppercase font-semibold shadow-lg',
-                isDark ? 'bg-zinc-900 border border-zinc-700 text-zinc-300' : 'bg-white border border-zinc-300 text-zinc-700 shadow-zinc-200/60'
-              ]"
-            >
+        <!-- Portrait -->
+        <div class="reveal lg:col-span-5 flex justify-center lg:justify-end" style="--d: 400ms">
+          <div class="relative w-full max-w-sm lg:max-w-none">
+            <div class="aspect-[4/5] overflow-hidden rounded-[2rem] border border-line bg-surface-2">
+              <img
+                src="@/assets/WinProfile.JPEG"
+                alt="Wongsewaris Tumsud"
+                class="w-full h-full object-cover hover:grayscale hover:scale-105 transition-all duration-700"
+              />
+            </div>
+            <div class="absolute -bottom-4 left-6 px-5 py-3 rounded-full bg-surface border border-line text-[11px] tracking-widest uppercase font-semibold text-fg-2 shadow-lg shadow-black/10">
               UX/UI Designer
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Skill ticker (decorative; the same skills are listed in About → Toolbox) -->
+    <div
+      class="marquee reveal relative mt-20 md:mt-24 overflow-hidden"
+      style="--d: 500ms; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)"
+      aria-hidden="true"
+    >
+      <div class="marquee-track">
+        <span
+          v-for="(item, i) in marqueeItems"
+          :key="i"
+          class="mx-1.5 inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-line bg-surface text-sm text-fg-2 whitespace-nowrap"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>{{ item }}
+        </span>
       </div>
     </div>
   </section>

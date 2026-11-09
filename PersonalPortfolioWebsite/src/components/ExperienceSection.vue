@@ -1,20 +1,8 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { useReveal } from '@/composables/useReveal'
+import SectionHeader from './SectionHeader.vue'
 
-defineProps({ isDark: Boolean })
-
-const visible = ref(false)
-const sectionRef = ref(null)
-let observer = null
-
-onMounted(() => {
-  observer = new IntersectionObserver(
-    ([entry]) => { if (entry.isIntersecting) visible.value = true },
-    { threshold: 0.1 }
-  )
-  if (sectionRef.value) observer.observe(sectionRef.value)
-})
-onUnmounted(() => observer?.disconnect())
+const { visible, sectionRef } = useReveal()
 
 const experiences = [
   {
@@ -71,79 +59,58 @@ const experiences = [
     badge: 'Certificate',
     badgeColor: 'amber',
   },
+  {
+    type: 'Certification',
+    period: 'November 2026',
+    title: 'Amazon Quick Certifications',
+    org: 'Amazon Quick Training Program',
+    desc: 'Completed the Amazon Quick training program under the AI FOR ALL HACKATHON 2026, gaining knowledge and practical experience in Amazon Quick, exploring AI-powered tools, data analysis, and the application of AI technology to enhance productivity and support modern business workflows.',
+    badge: 'Certificate',
+    badgeColor: 'amber',
+  },
 ]
 
+// Badge colours (light, with `dark:` overrides)
 const badgePalette = {
-  blue:    { dark: 'bg-blue-900/40 text-blue-400 border-blue-800',    light: 'bg-blue-50 text-blue-600 border-blue-200' },
-  rose:    { dark: 'bg-rose-900/40 text-rose-400 border-rose-800',    light: 'bg-rose-50 text-rose-600 border-rose-200' },
-  emerald: { dark: 'bg-emerald-900/40 text-emerald-400 border-emerald-800', light: 'bg-emerald-50 text-emerald-600 border-emerald-200' },
-  amber:   { dark: 'bg-amber-900/40 text-amber-400 border-amber-800', light: 'bg-amber-50 text-amber-600 border-amber-200' },
+  blue: 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-900/40 dark:text-blue-400 dark:border-blue-800',
+  rose: 'bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-900/40 dark:text-rose-400 dark:border-rose-800',
+  emerald: 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-400 dark:border-emerald-800',
+  amber: 'bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-900/40 dark:text-amber-400 dark:border-amber-800',
 }
 </script>
 
 <template>
-  <section id="experience" ref="sectionRef" class="py-28 md:py-36">
-    <div class="max-w-7xl mx-auto px-10">
+  <section id="experience" ref="sectionRef" :class="['py-20 md:py-28', { 'is-visible': visible }]">
+    <div class="page-container">
+      <SectionHeader title="Experience & Activities" />
 
-      <!-- Section header -->
-      <div :class="['flex items-center gap-4 mb-20 transition-all duration-700', visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6']">
-        <span class="w-10 h-px bg-rose-400"></span>
-        <span :class="['text-xs tracking-widest uppercase font-medium', isDark ? 'text-rose-400' : 'text-rose-500']">Experience &amp; Activities</span>
-      </div>
-
-      <!-- Timeline -->
-      <div class="relative">
-        <!-- Vertical line -->
-        <div
-          :class="['absolute left-[18px] top-0 bottom-0 w-px hidden md:block', isDark ? 'bg-zinc-800' : 'bg-zinc-200']"
-        ></div>
-
-        <div class="flex flex-col gap-10">
-          <div
-            v-for="(exp, i) in experiences"
-            :key="i"
-            :class="[
-              'md:pl-14 relative transition-all duration-700',
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-            ]"
-            :style="{ transitionDelay: `${i * 100}ms` }"
-          >
-            <!-- Dot on timeline -->
-            <div
-              :class="[
-                'absolute left-0 top-3 w-9 h-9 rounded-full border-2 border-rose-400 items-center justify-center shrink-0 hidden md:flex',
-                isDark ? 'bg-zinc-950' : 'bg-stone-50'
-              ]"
-            >
-              <span class="w-2 h-2 rounded-full bg-rose-400"></span>
-            </div>
-
-            <!-- Card -->
-            <div
-              :class="[
-                'p-6 rounded-sm border transition-all duration-300',
-                isDark ? 'border-zinc-800 bg-zinc-900/30 hover:border-zinc-600' : 'border-zinc-200 bg-white hover:border-rose-200 shadow-sm'
-              ]"
-            >
-              <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
-                <div>
-                  <div :class="['text-[10px] tracking-widest uppercase mb-1', isDark ? 'text-zinc-500' : 'text-zinc-600']">{{ exp.type }} · {{ exp.period }}</div>
-                  <h3 :class="['text-base font-semibold', isDark ? 'text-zinc-100' : 'text-zinc-900']">{{ exp.title }}</h3>
-                  <div :class="['text-sm mt-0.5', isDark ? 'text-zinc-500' : 'text-zinc-600']">{{ exp.org }}</div>
-                </div>
-                <span
-                  :class="[
-                    'text-[10px] tracking-widest uppercase px-3 py-1.5 rounded-sm border font-semibold shrink-0',
-                    isDark ? badgePalette[exp.badgeColor].dark : badgePalette[exp.badgeColor].light
-                  ]"
-                >{{ exp.badge }}</span>
-              </div>
-              <p :class="['text-sm leading-relaxed', isDark ? 'text-zinc-400' : 'text-zinc-700']">{{ exp.desc }}</p>
-            </div>
+      <!-- Editorial list: period on the left, details on the right -->
+      <div class="border-t border-line">
+        <article
+          v-for="(exp, i) in experiences"
+          :key="i"
+          class="reveal group grid md:grid-cols-12 gap-3 md:gap-10 py-8 border-b border-line"
+          :style="{ '--d': `${i * 80}ms` }"
+        >
+          <div class="md:col-span-3">
+            <div class="eyebrow mb-1">{{ exp.type }}</div>
+            <div class="text-sm font-medium text-accent-fg">{{ exp.period }}</div>
           </div>
-        </div>
-      </div>
 
+          <div class="md:col-span-9">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div class="min-w-0">
+                <h3 class="text-lg md:text-xl font-semibold text-fg group-hover:text-accent-fg transition-colors">{{ exp.title }}</h3>
+                <div class="text-sm mt-1 text-muted">{{ exp.org }}</div>
+              </div>
+              <span
+                :class="['text-[10px] tracking-widest uppercase px-3 py-1.5 rounded-full border font-semibold shrink-0', badgePalette[exp.badgeColor]]"
+              >{{ exp.badge }}</span>
+            </div>
+            <p class="text-sm md:text-base leading-relaxed text-fg-2 max-w-3xl">{{ exp.desc }}</p>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 </template>

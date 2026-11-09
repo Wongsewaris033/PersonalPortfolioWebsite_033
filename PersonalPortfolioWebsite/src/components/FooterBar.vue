@@ -1,5 +1,5 @@
 <script setup>
-defineProps({ isDark: Boolean })
+import { navItems, socialLinks } from '@/data/site'
 
 function scrollTo(id) {
   const el = document.getElementById(id)
@@ -8,46 +8,37 @@ function scrollTo(id) {
 </script>
 
 <template>
-  <footer :class="['py-10 border-t', isDark ? 'border-zinc-800' : 'border-zinc-100']">
-    <div class="max-w-7xl mx-auto px-10">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+  <footer class="py-12 border-t border-line">
+    <div class="page-container">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
 
         <!-- Copyright -->
-        <span :class="['font-mono text-xs', isDark ? 'text-zinc-600' : 'text-zinc-400']">
-          Wongsewaris Tumsud<span class="text-rose-400">.</span> © 2026
+        <span class="font-mono text-xs text-muted">
+          Wongsewaris Tumsud<span class="text-accent">.</span> © 2026
         </span>
 
-        <!-- Quick Links -->
-        <div class="flex items-center gap-6">
+        <!-- Quick links -->
+        <nav aria-label="Footer" class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           <button
-            v-for="item in ['about', 'work', 'skills', 'experience', 'contact']"
+            v-for="item in navItems"
             :key="item"
             @click="scrollTo(item)"
-            :class="[
-              'text-[10px] tracking-widest uppercase font-medium transition-colors',
-              isDark ? 'text-zinc-600 hover:text-zinc-300' : 'text-zinc-400 hover:text-zinc-700'
-            ]"
+            class="text-[10px] tracking-widest uppercase font-medium text-muted hover:text-fg transition-colors"
           >{{ item }}</button>
-        </div>
+        </nav>
 
-        <!-- Social Icons -->
-        <div class="flex items-center gap-4">
+        <!-- Social icons -->
+        <div class="flex items-center gap-3">
           <a
-            v-for="s in [{ label: 'GH', href: 'https://github.com/Wongsewaris033' },
-            { label: 'LI', href: 'https://www.linkedin.com/in/wongsewaris-tumsud-02523840b/' },
-            { label: 'FB', href: 'https://www.facebook.com/wongsewaris.tumsud/' },
-            { label: 'IG', href: 'https://www.instagram.com/win_wwr/'}]"
-            :key="s.label"
+            v-for="s in socialLinks"
+            :key="s.short"
             :href="s.href"
             target="_blank"
             rel="noopener noreferrer"
-            :class="[
-              'w-8 h-8 rounded-sm border flex items-center justify-center text-[10px] font-bold transition-all duration-200 hover:scale-105',
-              isDark
-                ? 'border-zinc-700 hover:border-rose-400 hover:text-rose-400'
-                : 'border-zinc-500 hover:border-rose-400 hover:text-rose-500 bg-white'
-            ]"
-          >{{ s.label }}</a>
+            :aria-label="s.label"
+            :title="s.label"
+            class="w-10 h-10 rounded-full border border-line flex items-center justify-center text-[10px] font-bold text-fg-2 hover:border-accent hover:text-accent-fg hover:-translate-y-0.5 transition-all duration-200"
+          >{{ s.short }}</a>
         </div>
 
       </div>

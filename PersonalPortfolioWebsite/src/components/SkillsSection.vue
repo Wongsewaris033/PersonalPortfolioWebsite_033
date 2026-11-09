@@ -1,43 +1,15 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { useReveal } from '@/composables/useReveal'
+import SectionHeader from './SectionHeader.vue'
 
-defineProps({ isDark: Boolean })
+const { visible, sectionRef } = useReveal()
 
-const visible = ref(false)
-const sectionRef = ref(null)
-let observer = null
-
-onMounted(() => {
-  observer = new IntersectionObserver(
-    ([entry]) => { if (entry.isIntersecting) visible.value = true },
-    { threshold: 0.15 }
-  )
-  if (sectionRef.value) observer.observe(sectionRef.value)
-})
-onUnmounted(() => observer?.disconnect())
-
-// Colour classes per level (dark / light variants)
+// Level badge colours (light, with `dark:` overrides)
 const levelColors = {
-  Beginner: {
-    dark:  'bg-slate-800 text-slate-300 border border-slate-700',
-    light: 'bg-slate-100 text-slate-600 border border-slate-300',
-  },
-  Intermediate: {
-    dark:  'bg-sky-900/60 text-sky-300 border border-sky-700',
-    light: 'bg-sky-100 text-sky-700 border border-sky-300',
-  },
-  Advanced: {
-    dark:  'bg-amber-900/50 text-amber-300 border border-amber-700',
-    light: 'bg-amber-100 text-amber-700 border border-amber-300',
-  },
-  Expert: {
-    dark:  'bg-emerald-900/50 text-emerald-300 border border-emerald-700',
-    light: 'bg-emerald-100 text-emerald-700 border border-emerald-300',
-  },
-}
-
-function levelClass(level, isDark) {
-  return levelColors[level]?.[isDark ? 'dark' : 'light'] ?? ''
+  Beginner: 'bg-slate-100 text-slate-600 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700',
+  Intermediate: 'bg-sky-100 text-sky-700 border-sky-300 dark:bg-sky-900/60 dark:text-sky-300 dark:border-sky-700',
+  Advanced: 'bg-amber-100 text-amber-700 border-amber-300 dark:bg-amber-900/50 dark:text-amber-300 dark:border-amber-700',
+  Expert: 'bg-emerald-100 text-emerald-700 border-emerald-300 dark:bg-emerald-900/50 dark:text-emerald-300 dark:border-emerald-700',
 }
 
 const technicalSkills = [
@@ -53,7 +25,7 @@ const technicalSkills = [
   },
   {
     name: 'Design Systems',
-    level: 'Advanced',
+    level: 'Intermediate',
     desc: 'Component Libraries, UI Consistency'
   },
   {
@@ -63,7 +35,7 @@ const technicalSkills = [
   },
   {
     name: 'Accessibility',
-    level: 'Intermediate',
+    level: 'Advanced',
     desc: 'Inclusive & Responsive Design'
   },
   {
@@ -86,6 +58,7 @@ const technicalSkills = [
 const softSkills = [
   'Communication',
   'Empathy',
+  'Active Listening',
   'Critical Thinking',
   'Problem Solving',
   'Collaboration & Teamwork',
@@ -128,78 +101,64 @@ const process = [
 </script>
 
 <template>
-  <section id="skills" ref="sectionRef" class="py-28 md:py-36">
-    <div class="max-w-7xl mx-auto px-10">
+  <section id="skills" ref="sectionRef" :class="['py-20 md:py-28', { 'is-visible': visible }]">
+    <div class="page-container">
+      <SectionHeader title="Skills & Process" />
 
-      <!-- Section header -->
-      <div :class="['flex items-center gap-4 mb-20 transition-all duration-700', visible ? 'opacity-100' : 'opacity-0']">
-        <span class="w-10 h-px bg-rose-400"></span>
-        <span :class="['text-xs tracking-widest uppercase font-medium', isDark ? 'text-rose-400' : 'text-rose-500']">Skills &amp; Process</span>
-      </div>
+      <div class="grid lg:grid-cols-12 gap-4 md:gap-5">
 
-      <div class="grid lg:grid-cols-12 gap-16 xl:gap-24">
+        <!-- Left: technical + soft skills -->
+        <div class="lg:col-span-7 flex flex-col gap-4 md:gap-5">
 
-        <!-- Technical Skills bars -->
-        <div class="lg:col-span-6">
-          <h3 :class="['text-2xl font-semibold mb-10', isDark ? 'text-zinc-100' : 'text-zinc-900']">Technical Skills</h3>
-          <div class="flex flex-col gap-6 mb-12">
-            <div
-              v-for="(skill, i) in technicalSkills"
-              :key="i"
-              :class="['transition-all duration-700', visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4']"
-              :style="{ transitionDelay: `${i * 80}ms` }"
-            >
-              <div class="flex items-center gap-2">
-                <span :class="['text-sm font-semibold shrink-0', isDark ? 'text-zinc-200' : 'text-zinc-800']">{{ skill.name }}</span>
-                <span :class="['flex-1 border-b border-dashed', isDark ? 'border-zinc-700' : 'border-zinc-300']"></span>
-                <span :class="['text-[11px] font-semibold tracking-wide px-2.5 py-0.5 rounded shrink-0', levelClass(skill.level, isDark)]">{{ skill.level }}</span>
+          <div class="reveal card p-7 md:p-9" style="--d: 100ms">
+            <h3 class="text-2xl font-semibold mb-8 text-fg">Technical Skills</h3>
+            <div class="flex flex-col">
+              <div
+                v-for="(skill, i) in technicalSkills"
+                :key="skill.name"
+                :class="['py-4', i > 0 ? 'border-t border-line' : 'pt-0']"
+              >
+                <div class="flex items-center gap-3">
+                  <span class="text-sm font-semibold min-w-0 text-fg">{{ skill.name }}</span>
+                  <span class="flex-1 min-w-3 border-b border-dashed border-line"></span>
+                  <span :class="['text-[11px] font-semibold tracking-wide px-3 py-1 rounded-full border shrink-0', levelColors[skill.level]]">{{ skill.level }}</span>
+                </div>
+                <div class="text-xs mt-1.5 text-muted">{{ skill.desc }}</div>
               </div>
-              <div :class="['text-[11px] mt-1.5', isDark ? 'text-zinc-600' : 'text-zinc-500']">{{ skill.desc }}</div>
             </div>
           </div>
 
-          <!-- Soft Skills -->
-          <h3 :class="['text-xl font-semibold mb-5', isDark ? 'text-zinc-100' : 'text-zinc-900']">Soft Skills</h3>
-          <div class="flex flex-wrap gap-2">
-            <span
-              v-for="(skill, i) in softSkills"
-              :key="i"
-              :class="[
-                'px-4 py-2 text-xs rounded-sm border font-medium transition-all duration-700',
-                isDark ? 'border-zinc-700 text-zinc-300 bg-zinc-900/40' : 'border-zinc-200 text-zinc-700 bg-white',
-                visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-              ]"
-              :style="{ transitionDelay: `${500 + i * 60}ms` }"
-            >{{ skill }}</span>
+          <div class="reveal card p-7 md:p-9" style="--d: 200ms">
+            <h3 class="text-xl font-semibold mb-5 text-fg">Soft Skills</h3>
+            <div class="flex flex-wrap gap-2">
+              <span
+                v-for="skill in softSkills"
+                :key="skill"
+                class="px-4 py-2 text-xs rounded-full border border-line font-medium text-fg-2 bg-surface-2 hover:border-accent hover:text-accent-fg transition-colors"
+              >{{ skill }}</span>
+            </div>
           </div>
+
         </div>
 
-        <!-- Process column -->
-        <div class="lg:col-span-6">
-          <h3 :class="['text-2xl font-semibold mb-10', isDark ? 'text-zinc-100' : 'text-zinc-900']">My Design Process</h3>
-          <div class="flex flex-col gap-0">
-            <div
-              v-for="(step, i) in process"
-              :key="i"
-              :class="[
-                'flex gap-6 transition-all duration-700',
-                visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'
-              ]"
-              :style="{ transitionDelay: `${i * 100}ms` }"
-            >
+        <!-- Right: process -->
+        <div class="reveal card lg:col-span-5 p-7 md:p-9" style="--d: 150ms">
+          <h3 class="text-2xl font-semibold mb-8 text-fg">My Design Process</h3>
+          <div class="flex flex-col">
+            <div v-for="(step, i) in process" :key="step.step" class="flex gap-5">
               <div class="flex flex-col items-center">
-                <div class="w-9 h-9 rounded-full border-2 border-rose-400 flex items-center justify-center shrink-0">
-                  <span class="text-[9px] font-mono text-rose-400">{{ step.step }}</span>
+                <div class="w-10 h-10 rounded-full border-2 border-accent flex items-center justify-center shrink-0 bg-surface">
+                  <span class="text-[10px] font-mono text-accent-fg">{{ step.step }}</span>
                 </div>
                 <div
                   v-if="i < process.length - 1"
-                  :class="['w-px flex-1 mt-1 mb-1', isDark ? 'bg-zinc-800' : 'bg-zinc-300']"
-                  style="min-height: 2rem;"
+                  class="w-px flex-1 my-1 bg-line"
+                  style="min-height: 2rem"
                 ></div>
               </div>
               <div class="pb-8">
-                <div :class="['text-base font-semibold mb-1', isDark ? 'text-zinc-100' : 'text-zinc-900']">{{ step.title }}</div>
-                <div :class="['text-sm leading-relaxed', isDark ? 'text-zinc-500' : 'text-zinc-600']">{{ step.desc }}</div>
+                <div class="text-base font-semibold mb-1 text-fg">{{ step.title }}</div>
+                <div class="text-sm leading-relaxed text-muted">{{ step.desc }}</div>
               </div>
             </div>
           </div>
