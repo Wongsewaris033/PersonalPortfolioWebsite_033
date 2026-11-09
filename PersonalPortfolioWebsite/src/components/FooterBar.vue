@@ -14,7 +14,7 @@ function scrollTo(id) {
 
         <!-- Copyright -->
         <span class="font-mono text-xs text-muted">
-          Wongsewaris Tumsud<span class="text-accent">.</span> © 2026
+          Wongsewaris Tumsud<span class="text-accent">.</span>
         </span>
 
         <!-- Quick links -->
