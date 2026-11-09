@@ -70,7 +70,7 @@ const interests = [
           <div class="text-[11px] tracking-widest uppercase mb-2 text-accent-fg">2024 – Present</div>
           <div class="text-lg font-semibold text-fg leading-snug">Bachelor of School of Information Technology</div>
           <div class="text-sm mt-2 text-muted">King Mongkut's University of Technology Thonburi (KMUTT), Bangkok</div>
-          <div class="text-xs mt-4 text-muted">Specialisation: UX/UI Design</div>
+          <div class="text-xs mt-4 text-muted">Study Plan: UX/UI Designer</div>
         </div>
 
         <!-- Career goals -->
